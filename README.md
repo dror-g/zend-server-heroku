@@ -17,7 +17,7 @@ This is a build pack provides Zend Server on Heroku. Current version is 6.1. In 
 * xz compression utility - it's installed automatically by vagrant if you follow the guide below
 
 # Usage
-1. Create a folder on your workstation - make sure it has a file named index.php (if you don't do this then you'll have to manually specify which buildpack to use for the app).
+1. Create a folder on your workstation - make sure it has a file named "zend_server_php_app" (a simple "touch" will do).
 2. cd to said folder, run "git init ; git add . ; git commit -m first commit" 
 3. heroku create --buildpack=https://github.com/dror-g/zend-server-heroku.git   
 4. git push heroku master
