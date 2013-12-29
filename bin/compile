@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+# fail fast
+set -e
+
+pwd
+
+BIN_DIR=$(dirname $0)
+BUILD_DIR=$1
+CACHE_DIR=$2
+LP_DIR=`cd $(dirname $0); cd ..; pwd`
+PHP_PATH=$BUILD_DIR/zend-server-6-php-5.4
+APACHE_PATH=$BUILD_DIR/apache
+NGINX_PATH=$BUILD_DIR/nginx
+
+# include .files when moving things around
+shopt -s dotglob
+
+cd $BUILD_DIR
+
+# move app things to www
+mkdir -p $CACHE_DIR/www
+mv * $CACHE_DIR/www
+mv $CACHE_DIR/www .
+
+# keep Procfile
+if [ -f www/Procfile ]; then
+  mv www/Procfile .
+fi
+
+#Download and install Zend Server
+tar xJf $LP_DIR/zend-server-6-php-5.4-nginx.tar.xz
+tar xzf $LP_DIR/nginx.tar.gz
+
+# update config files - only use this with DEA_NG+Warden!!!!!!!
+cp -r $LP_DIR/conf/nginx/* $NGINX_PATH
+mkdir -p etc
+cp $LP_DIR/conf/etc/zce.rc.nginx etc/zce.rc
+chmod 666 etc/zce.rc
+
+cp -r $LP_DIR/conf/zend/* $PHP_PATH
+# make php available on bin
+mkdir -p bin
+ln -s /app/zend-server-6-php-5.4/bin/php bin/php
+
+# move json-env-extract.php into bin and make it executable
+mv $LP_DIR/json-env-extract.php bin/
+chmod +x bin/json-env-extract.php
+
+mv $LP_DIR/boot.sh .
+mv $LP_DIR/bootstrap.sh .
+chmod +x boot.sh
+chmod +x bootstrap.sh
+
+# clean the cache
+rm -rf $CACHE_DIR
+
+#export ZEND_UID=`id -u`
+#export ZEND_GID=`id -g`
+#echo "WEB_USER=u${ZEND_UID}" >> etc/zce.rc
+
