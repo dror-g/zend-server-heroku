@@ -18,10 +18,12 @@ This is a build pack provides Zend Server on Heroku. Current version is 6.1. In 
 
 # Usage
 1. Create a folder on your workstation - make sure it has a file named index.php (if you don't do this then you'll have to manually specify which buildpack to use for the app).
-2. heroku push --buildpack=https://github.com/dror-g/zend-server-heroku.git   
-3. wait for the app to start
-4. Once it's started go to the Zend Server GUI on the app link.    For example : http://dave2.herokuapp.io/ZendServer
-5. Enter a user name and password to use to authenticate with the GUI.
+2. cd to said folder, run "git init ; git add . ; git commit -m first commit" 
+3. heroku create --buildpack=https://github.com/dror-g/zend-server-heroku.git   
+4. git push heroku master
+5. wait for the app to start
+6. Once it's started go to the Zend Server GUI on the app link.    For example : http://dave2.herokuapp.io/ZendServer
+7. Enter a user name and password to use to authenticate with the GUI.
 
 
 ```
